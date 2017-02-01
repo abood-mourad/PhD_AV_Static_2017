@@ -64,6 +64,7 @@ public class AV_Static
 	{
 		ArrayList<metHeuMatch> final_matches = new ArrayList<metHeuMatch>();	//Create an ArrayList object to store the list of final matches to be returned by the algorithm.
 		//TO DO
+		//Here where the fun begins !
 		return final_matches;													//Return the final list of matches.
 	}
 
