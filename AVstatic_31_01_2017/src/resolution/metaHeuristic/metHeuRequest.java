@@ -28,7 +28,7 @@ public class metHeuRequest extends metHeuAnnounce
 	// VARIABLES
 	// **************************************************************************************************
 	
-	protected double max_walk;									//represents the maximum walking distance possible for the rider.
+	public double max_walk;									//represents the maximum walking distance possible for the rider.
 	
 	public ArrayList<metHeuMeetingPoint> MP_Pick;				//represents the set of feasible pickup meeting points for the request.
 	

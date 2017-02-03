@@ -28,9 +28,9 @@ public class metHeuOffer extends metHeuAnnounce
 	// VARIABLES
 	// **************************************************************************************************
 	
-	protected int max_duration;									//represents the maximum trip duration that the owner accepts.
+	public int max_duration;									//represents the maximum trip duration that the owner accepts.
 	
-	protected int num_seats;									//represents the number of available seats.
+	public int num_seats;									//represents the number of available seats.
 	
 	public ArrayList<metHeuMatch> feasible_matches;				//represents the set of feasible matches for the offer, to be filled during the preprocessing.
 		

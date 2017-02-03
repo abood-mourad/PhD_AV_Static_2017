@@ -28,9 +28,9 @@ public class metHeuMeetingPoint
 	// VARIABLES
 	// **************************************************************************************************
 	
-	protected metHeuPoint location;									//represents the actual location of the meeting point.
+	public metHeuPoint location;									//represents the actual location of the meeting point.
 	
-	protected double service_time;									//represents the service time required at the meeting point (the time for riders to get in or out the AV).
+	public double service_time;									//represents the service time required at the meeting point (the time for riders to get in or out the AV).
 				
 	// **************************************************************************************************
 	// CONSTRUCTORS
