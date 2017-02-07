@@ -28,7 +28,7 @@ public class metHeuRequest extends metHeuAnnounce
 	// VARIABLES
 	// **************************************************************************************************
 	
-	public double max_walk;									//represents the maximum walking distance possible for the rider.
+	public double max_walk;										//represents the maximum walking distance possible for the rider.
 	
 	public ArrayList<metHeuMeetingPoint> MP_Pick;				//represents the set of feasible pickup meeting points for the request.
 	
@@ -37,6 +37,8 @@ public class metHeuRequest extends metHeuAnnounce
 	public ArrayList<metHeuMeetingArc> MP_Arc;					//represents the set of feasible meeting point arcs for the request.
 	
 	public ArrayList<metHeuMatch> feasible_matches;				//represents the set of feasible matches for the request, to be filled during the preprocessing.
+	
+	public double tmp_distance;									//represents the distance between request origin and a given point(to be used later to temporarily store updated distances).
 	
 	// **************************************************************************************************
 	// CONSTRUCTORS
@@ -51,6 +53,7 @@ public class metHeuRequest extends metHeuAnnounce
 		this.MP_Drop = new ArrayList<metHeuMeetingPoint>();
 		this.MP_Arc = new ArrayList<metHeuMeetingArc>();
 		this.feasible_matches = new ArrayList<metHeuMatch>();
+		this.tmp_distance = Double.MAX_VALUE;
 	}
 		
 	//A constructor to create an offer (AV owner) object with parameters (origin, destination, etime, ltime, mawimum duration, number of available seats).
@@ -65,6 +68,7 @@ public class metHeuRequest extends metHeuAnnounce
 		this.MP_Drop = new ArrayList<metHeuMeetingPoint>();
 		this.MP_Arc = new ArrayList<metHeuMeetingArc>();
 		this.feasible_matches = new ArrayList<metHeuMatch>();
+		this.tmp_distance = Double.MAX_VALUE;
 	}
 							
 	// **************************************************************************************************

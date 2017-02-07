@@ -61,4 +61,10 @@ public class Data_Instance
 		//TO DO
 		return 0;
 	}
+	
+	//A method that writes the data instance into a file.
+	public void Write_Instance()
+	{
+		//TO DO
+	}
 }
