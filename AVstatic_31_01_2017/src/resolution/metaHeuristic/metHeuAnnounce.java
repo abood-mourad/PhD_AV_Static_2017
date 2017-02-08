@@ -28,6 +28,8 @@ public abstract class metHeuAnnounce
 	// VARIABLES
 	// **************************************************************************************************
 				
+	public int id;										//represents the id of the trip announcement.
+	
 	public metHeuPoint origin;							//represents the origin location of the trip announcement.
 	
 	public metHeuPoint destination;						//represents the destination location of the trip announcement.

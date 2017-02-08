@@ -28,6 +28,8 @@ public class metHeuPoint
 	// VARIABLES
 	// **************************************************************************************************
 			
+	public int id;									//represents point id.
+	
 	public double x;								//represents point coordinates on the X axis.
 	
 	public double y;								//represents point coordinates on the Y axis.

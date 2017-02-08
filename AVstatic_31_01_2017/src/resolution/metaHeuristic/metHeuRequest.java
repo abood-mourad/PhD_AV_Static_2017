@@ -28,7 +28,7 @@ public class metHeuRequest extends metHeuAnnounce
 	// VARIABLES
 	// **************************************************************************************************
 	
-	public double max_walk;										//represents the maximum walking distance possible for the rider.
+	public double max_walk;										//represents the maximum walking distance (time) possible for the rider.
 	
 	public ArrayList<metHeuMeetingPoint> MP_Pick;				//represents the set of feasible pickup meeting points for the request.
 	
@@ -57,8 +57,9 @@ public class metHeuRequest extends metHeuAnnounce
 	}
 		
 	//A constructor to create an offer (AV owner) object with parameters (origin, destination, etime, ltime, mawimum duration, number of available seats).
-	public metHeuRequest(metHeuPoint o, metHeuPoint d, double etime, double ltime, double walk)
+	public metHeuRequest(int r_id, metHeuPoint o, metHeuPoint d, double etime, double ltime, double walk)
 	{
+		this.id = r_id;
 		this.origin = new metHeuPoint(o.x,o.y);
 		this.destination = new metHeuPoint(d.x,d.y);
 		this.e_time = etime;
