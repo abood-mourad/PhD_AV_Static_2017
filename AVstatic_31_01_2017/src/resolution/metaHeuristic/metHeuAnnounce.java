@@ -28,13 +28,15 @@ public abstract class metHeuAnnounce
 	// VARIABLES
 	// **************************************************************************************************
 				
-	protected metHeuPoint origin;							//represents the origin location of the trip announcement.
+	public int id;										//represents the id of the trip announcement.
 	
-	protected metHeuPoint destination;						//represents the destination location of the trip announcement.
+	public metHeuPoint origin;							//represents the origin location of the trip announcement.
 	
-	protected double e_time;								//represents the earliest departure time of the trip announcement.
+	public metHeuPoint destination;						//represents the destination location of the trip announcement.
 	
-	protected double l_time;								//represents the latest departure time of the trip announcement.
+	public double e_time;								//represents the earliest departure time of the trip announcement.
+	
+	public double l_time;								//represents the latest departure time of the trip announcement.
 	
 	// **************************************************************************************************
 	// CONSTRUCTORS

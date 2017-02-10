@@ -28,9 +28,9 @@ public class metHeuOffer extends metHeuAnnounce
 	// VARIABLES
 	// **************************************************************************************************
 	
-	protected int max_duration;									//represents the maximum trip duration that the owner accepts.
+	public double max_duration;									//represents the maximum trip duration that the owner accepts.
 	
-	protected int num_seats;									//represents the number of available seats.
+	public int num_seats;										//represents the number of available seats.
 	
 	public ArrayList<metHeuMatch> feasible_matches;				//represents the set of feasible matches for the offer, to be filled during the preprocessing.
 		
@@ -47,8 +47,9 @@ public class metHeuOffer extends metHeuAnnounce
 	}
 	
 	//A constructor to create an offer (AV owner) object with parameters (origin, destination, etime, ltime, mawimum duration, number of available seats).
-	public metHeuOffer(metHeuPoint o, metHeuPoint d, double etime, double ltime, int duration, int seats)
+	public metHeuOffer(int o_id, metHeuPoint o, metHeuPoint d, double etime, double ltime, double duration, int seats)
 	{
+		this.id = o_id;
 		this.origin = new metHeuPoint(o.x,o.y);
 		this.destination = new metHeuPoint(d.x,d.y);
 		this.e_time = etime;

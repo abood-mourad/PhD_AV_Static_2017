@@ -19,6 +19,7 @@ import ilog.cplex.IloCplex;
 import ilog.cplex.IloCplex.CplexStatus;
 import ilog.cplex.IloCplex.IIS.Status;
 import resolution.metaHeuristic.metHeuMatch;
+import resolution.metaHeuristic.metHeuMeetingPoint;
 import resolution.metaHeuristic.metHeuOffer;
 import resolution.metaHeuristic.metHeuRequest;
 
@@ -32,9 +33,11 @@ public class Data_Instance
 	// VARIABLES
 	// **************************************************************************************************
 		
-	public ArrayList<metHeuOffer> offers;								//represents the number of offers in the instance.
+	public ArrayList<metHeuOffer> offers;								//represents the set of offers available in the instance.
 	
-	public ArrayList<metHeuRequest> requests;							//represents the number of requests in the instance.
+	public ArrayList<metHeuRequest> requests;							//represents the set of requests available in the instance.
+	
+	public ArrayList<metHeuMeetingPoint> meeting_points;				//represents the set of meeting points available in the instance.
 	
 	// **************************************************************************************************
 	// CONSTRUCTORS
@@ -45,6 +48,7 @@ public class Data_Instance
 	{
 		this.offers = new ArrayList<metHeuOffer>();
 		this.requests = new ArrayList<metHeuRequest>();
+		this.meeting_points = new ArrayList<metHeuMeetingPoint>();
 	}
 		
 	// **************************************************************************************************
@@ -56,5 +60,11 @@ public class Data_Instance
 	{
 		//TO DO
 		return 0;
+	}
+	
+	//A method that writes the data instance into a file.
+	public void Write_Instance()
+	{
+		//TO DO
 	}
 }

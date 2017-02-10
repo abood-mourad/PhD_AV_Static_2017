@@ -46,8 +46,8 @@ public class metHeuMeetingArc
 	//A constructor to create a meeting arc with parameters (pickup meeting point, drop-off meeting point).
 	public metHeuMeetingArc(metHeuMeetingPoint pick, metHeuMeetingPoint drop)
 	{
-		this.arc_pick = new metHeuMeetingPoint(pick);
-		this.arc_drop = new metHeuMeetingPoint(drop);
+		this.arc_pick = pick;
+		this.arc_drop = drop;
 	}
 		
 	// **************************************************************************************************
