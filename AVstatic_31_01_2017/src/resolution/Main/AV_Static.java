@@ -38,11 +38,13 @@ import java.util.Random;
 public class AV_Static 
 {
 	public static IloCplex solver;
-	public static double radius = 1.1;
-	public static double speed = 15;
+	public static double radius = 1.770274;
+	public static double speed = 24.14;
 	public static double max_duration = 0.35;
 	public static int num_seats = 3;
-	public static double max_walk = 0.11;
+	public static double max_walk = 0.804;
+	public static final double R = 6372.8; 										//Kilometers.
+	public static double share_percentage = 0.055;								//Percentage of trips willing to be shared.
 
 	public static void main(String[] args) throws FileNotFoundException
 	{
@@ -50,11 +52,11 @@ public class AV_Static
 		File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/test.txt");
 		PrintStream printStream = new PrintStream(f);
 		//Build data instances based on original files, save generated instances into new files.
-		Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
+		//Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
 		//Build_Instances("Birmingham");											//Build different instances for Birmingham.
 		long t= System.currentTimeMillis();										//Create a time variable to calculate excution time.
 		//Read one data instance from file and store it in a Data_Instance object.
-		Data_Instance instance = Read_Instance("BerlinCenter1");				//Read a Data_Instance object from a file.
+		Data_Instance instance = Read_Instance("BerlinCenter", 0);				//Read a Data_Instance object from a file.
 		//Call the preprocessing procedure passing the Data_Instance as an input.
 		ArrayList<metHeuMatch> final_matches = Match_Gen_Algo_V1(instance);		//Store the set of feasible matches returned by the preprocession.
 		//Call the solve method of the matching problem passing the set of feasible matches as an input.
@@ -109,7 +111,19 @@ public class AV_Static
 				ArrayList<metHeuMeetingPoint> meeting_points = new ArrayList<metHeuMeetingPoint>();
 				for(int z = 0 ; z < zone_centers.size() ; z++)
 				{
-					double angle = Math.random()*Math.PI*2;
+					for(int tmp = 0 ; tmp < 4 ; tmp++)
+					{
+						//Create meeting point and add it to the list.
+						double w = radius*Math.sqrt(Math.random());
+						double u = 2*Math.PI*Math.random();
+						metHeuMeetingPoint mp = new metHeuMeetingPoint();
+						mp.location.id = counter++;
+						mp.location.x = zone_centers.get(z).x + (w * Math.cos(u));
+						mp.location.y = zone_centers.get(z).y + (w * Math.sin(u));
+						MPwr.write(mp.location.id + "\t" + mp.location.x + "\t" + mp.location.y + "\t\t" + mp.service_time);
+						MPwr.newLine();
+					}
+					/*double angle = Math.random()*Math.PI*2;
 					//Create Point in X+Y+ space and add it to the list.
 					metHeuMeetingPoint mp1 = new metHeuMeetingPoint();
 					mp1.location.id = counter++;
@@ -141,7 +155,7 @@ public class AV_Static
 					mp4.location.y = zone_centers.get(z).y - Math.sin(angle)*radius;
 					MPwr.write(mp4.location.id + "\t" + mp4.location.x + "\t" + mp4.location.y + "\t\t" + mp4.service_time);
 					MPwr.newLine();
-					meeting_points.add(mp4);
+					meeting_points.add(mp4);*/
 				}
 				MPwr.close();
 				//Generate OD trips.
@@ -152,9 +166,9 @@ public class AV_Static
 				FileWriter REwr = new FileWriter("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/" + city + "_Requests_" + ni);
 				BufferedWriter OFbr = new BufferedWriter(OFwr);
 				BufferedWriter REbr = new BufferedWriter(REwr);
-				OFbr.write("ID \t\t Origin_X \t\t\t\t\t Origin_Y \t\t\t\t\t Destination_X \t\t\t\t\t Destination_Y \t\t\t\t\t E_time \t\t\t L_time \t\t\t Max_Duration \t\t\t Seats");
+				OFbr.write("ID \t\t Origin_X \t\t\t Origin_Y \t\t Destination_X \t\t Destination_Y \t\t E_time \t\t\t L_time \t\t\t Max_Duration \t\t\t Seats");
 				OFbr.newLine();
-				REbr.write("ID \t\t Origin_X \t\t\t\t\t Origin_Y \t\t\t\t\t Destination_X \t\t\t\t\t Destination_Y \t\t\t\t\t E_time \t\t\t L_time \t\t\t Max_Walk");
+				REbr.write("ID \t\t Origin_X \t\t\t Origin_Y \t\t Destination_X \t\t Destination_Y \t\t E_time \t\t\t L_time \t\t\t Max_Walk");
 				REbr.newLine();
 				AVGbr.readLine();															//Read until the line of AVGs.
 				AVGbr.readLine();
@@ -171,10 +185,10 @@ public class AV_Static
 					for(int des = 0 ; des < AVG_parts.length -1 ; des++)					//For every AVG record.
 					{
 						String[] AVG_des = AVG_parts[des].split(":");						//Split AVG record into a destination and a AVG value.
-						int num_trips =	getPoisson(Double.parseDouble(AVG_des[1]) * 0.055);	//Compute the actual number of trips.
+						int num_trips =	getPoisson(Double.parseDouble(AVG_des[1]) * share_percentage);	//Compute the actual number of trips.
 						for(int t = 1 ; t <= num_trips ; t++)
 						{
-							if(t % 2 != 0)													//If the announcement to be generated is of an owner.
+							if(t % 2 == 0)													//If the announcement to be generated is of an owner.
 							{
 								//Generate the morning trip offer.
 								metHeuOffer offer1 = new metHeuOffer();						//Create offer object.
@@ -254,7 +268,7 @@ public class AV_Static
 								REbr.newLine();
 								//Generate the evening trip request.
 								metHeuRequest request2 = new metHeuRequest();				//Create request object.
-								request2.id = request_counter++;							//Asiign request id.
+								request2.id = request_counter++;							//Assign request id.
 								//Assign request origin and destination (reverse request1).
 								request2.origin.x = request1.destination.x;
 								request2.origin.y = request1.destination.y;
@@ -267,6 +281,24 @@ public class AV_Static
 								request2.max_walk = max_walk;
 								//Add trip announcement (request) to file.
 								REbr.write(request2.id + "\t" + request2.origin.x + "\t" + request2.origin.y + "\t" + request2.destination.x + "\t" + request2.destination.y + "\t" + request2.e_time + "\t" + request2.l_time + "\t" + request2.max_walk);
+								REbr.newLine();
+								//Generate a request during the day (between 10 and 16).
+								metHeuRequest request3 = new metHeuRequest();				//Create request object.
+								request3.id = request_counter++;							//Assign request id.
+								//Generate origin and destination points.
+								w = radius*Math.sqrt(Math.random());
+								u = 2*Math.PI*Math.random();
+								request3.origin.x = zone_centers.get(row).x + (w * Math.cos(u));
+								request3.origin.y = zone_centers.get(row).y + (w * Math.sin(u));
+								request3.destination.x = zone_centers.get(Integer.parseInt(AVG_des[0].trim())).x + (w * Math.cos(u));
+								request3.destination.y = zone_centers.get(Integer.parseInt(AVG_des[0].trim())).y + (w * Math.sin(u));
+								//Generate time window (uniformly distributed between 10 AM and 16 PM).
+								request3.e_time = r.nextDouble()*6+10;
+								request3.l_time = request3.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(row), zone_centers.get(Integer.parseInt(AVG_des[0].trim()))));
+								//Assign max walking time.
+								request3.max_walk = max_walk;
+								//Add trip announcement (request) to file.
+								REbr.write(request3.id + "\t" + request3.origin.x + "\t" + request3.origin.y + "\t" + request3.destination.x + "\t" + request3.destination.y + "\t" + request3.e_time + "\t" + request3.l_time + "\t" + request3.max_walk);
 								REbr.newLine();
 							}
 						}
@@ -285,10 +317,117 @@ public class AV_Static
 	}
 	
 	//A method for reading one Data instance from a file to a Data instance object.
-	public static Data_Instance Read_Instance(String city_instance)
+	public static Data_Instance Read_Instance(String city_instance, int version)
 	{
 		Data_Instance instance = new Data_Instance();
-		
+		//Read instance from files.
+		try 
+		{
+			//Read meeting points from file and add them to instance.
+			FileReader MPfr = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/" + city_instance + "_MPs_" + version);
+			BufferedReader MPbr = new BufferedReader(MPfr);
+			MPbr.readLine();
+			String line = null;
+			while((line = MPbr.readLine()) != null)
+			{
+				String[] parts = line.split("\\s+");
+				metHeuMeetingPoint MP = new metHeuMeetingPoint();									//Create meeting point object.
+				MP.location.id = Integer.parseInt(parts[0].trim());									//Read location id.
+				MP.location.x = Double.parseDouble(parts[1].trim());								//Read location coordinate on X-axis.
+				MP.location.y = Double.parseDouble(parts[2].trim());								//Read location coordinate on Y-axis.
+				MP.service_time = Double.parseDouble(parts[3].trim());								//Read MP service time.
+				instance.meeting_points.add(MP);													//Add meeting point to the instance list of meeting points.
+			}
+			MPbr.close();
+			//Read trip offers from file and add them to instance.
+			FileReader OFfr = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/" + city_instance + "_Offers_" + version);
+			BufferedReader OFbr = new BufferedReader(OFfr);
+			OFbr.readLine();
+			while((line = OFbr.readLine()) != null)
+			{
+				String[] parts = line.split("\\s+");												
+				metHeuOffer offer = new metHeuOffer();												//Create offer object.
+				offer.id = Integer.parseInt(parts[0].trim());										//Read offer id.
+				offer.origin.x = Double.parseDouble(parts[1].trim());								//Read offer origin_x.
+				offer.origin.y = Double.parseDouble(parts[2].trim());								//Read offer origin_y.
+				offer.destination.x = Double.parseDouble(parts[3].trim());							//Read offer destination_x.
+				offer.destination.y = Double.parseDouble(parts[4].trim());							//Read offer destination_y.
+				offer.e_time = Double.parseDouble(parts[5].trim());									//Read offer earliest departure time.
+				offer.l_time = Double.parseDouble(parts[6].trim());									//Read offer latest arrival time.
+				offer.max_duration = Double.parseDouble(parts[7].trim());							//Read offer max duration.
+				offer.num_seats = Integer.parseInt(parts[8].trim());								//Read offer num of available seats.
+				instance.offers.add(offer);															//Add offer to the instance list of offers.
+			}
+			OFbr.close();
+			//Read trip requests from file and add them to instance.
+			FileReader REfr = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/" + city_instance + "_Requests_" + version);
+			BufferedReader REbr = new BufferedReader(REfr);
+			REbr.readLine();
+			while((line = REbr.readLine()) != null)
+			{
+				String[] parts = line.split("\\s+");
+				metHeuRequest request = new metHeuRequest();										//Create request object.
+				request.id = Integer.parseInt(parts[0].trim());										//Read request id.
+				request.origin.x = Double.parseDouble(parts[1].trim());								//Read request origin_x.
+				request.origin.y = Double.parseDouble(parts[2].trim());								//Read request origin_y.
+				request.destination.x = Double.parseDouble(parts[3].trim());						//Read request destination_x.
+				request.destination.y = Double.parseDouble(parts[4].trim());						//Read request destination_y.
+				request.e_time = Double.parseDouble(parts[5].trim());								//Read request earliest departure time.
+				request.l_time = Double.parseDouble(parts[6].trim());								//Read request latest arrival time.
+				request.max_walk = Double.parseDouble(parts[7].trim());								//Read request max walking distance.
+				instance.requests.add(request);														//Add request to the instance list of requests.
+			}
+			REbr.close();
+			//For every request, find the set of feasible pickup MPs and the set of feasible drop-off MPs.
+			for(int r = 0 ; r < instance.requests.size() ; r++)
+			{
+				instance.requests.get(r).MP_Pick.add(new metHeuMeetingPoint(instance.requests.get(r).origin));
+				instance.requests.get(r).MP_Drop.add(new metHeuMeetingPoint(instance.requests.get(r).destination));
+				for(int mp = 0 ; mp < instance.meeting_points.size() ; mp++)						//For every request.
+				{
+					//If the travel time between request origin and MP is less than the max walk of the request, then add MP to the set of feasible pickup MPs of the request.
+					if(Calculate_Distance(instance.requests.get(r).origin, instance.meeting_points.get(mp).location) <= instance.requests.get(r).max_walk)
+					{
+						instance.requests.get(r).MP_Pick.add(instance.meeting_points.get(mp));
+					}
+					//If the travel time between request destination and MP is less than the max walk of the request, then add MP to the set of feasible drop-off MPs of the request.
+					if(Calculate_Distance(instance.requests.get(r).destination, instance.meeting_points.get(mp).location) <= instance.requests.get(r).max_walk)
+					{
+						instance.requests.get(r).MP_Drop.add(instance.meeting_points.get(mp));
+					}
+				}
+			}
+			//
+			ArrayList<metHeuMeetingArc> temp = new ArrayList<metHeuMeetingArc>();
+			//For every request, find the set of feasible meeting point arcs. //Better to do this directly in the algorithm for memory reasons.
+			for(int req = 0 ; req < instance.requests.size() ; req++)
+			{
+				//Add origin-destination MP arc.
+				/*metHeuMeetingArc arc1 = new metHeuMeetingArc(new metHeuMeetingPoint(instance.requests.get(req).origin), new metHeuMeetingPoint( instance.requests.get(req).destination));
+				instance.requests.get(req).MP_Arc.add(arc1);*/
+				for(int p = 0; p < instance.requests.get(req).MP_Pick.size() ; p++)					//For every feasible pickup MP.
+				{
+					//Add pickup-destination arc.
+					/*metHeuMeetingArc arc2 = new metHeuMeetingArc(instance.requests.get(req).MP_Pick.get(p), new metHeuMeetingPoint(instance.requests.get(req).destination));
+					instance.requests.get(req).MP_Arc.add(arc2);*/
+					for(int d = 0 ; d < instance.requests.get(req).MP_Drop.size() ; d++)			//For every feasible drop-off MP.
+					{
+						//Add origin-drop MP arc.
+						/*metHeuMeetingArc arc3 = new metHeuMeetingArc(new metHeuMeetingPoint(instance.requests.get(req).origin), instance.requests.get(req).MP_Drop.get(d));
+						instance.requests.get(req).MP_Arc.add(arc3);*/
+						//Add pick MP-drop MP arc.
+						metHeuMeetingArc arc4 = new metHeuMeetingArc(instance.requests.get(req).MP_Pick.get(p), instance.requests.get(req).MP_Drop.get(d));
+						instance.requests.get(req).MP_Arc.add(arc4);
+						temp.add(arc4);
+					}
+				}
+			}
+			System.out.print(temp.size());
+		} catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return instance;
 	}
 	
@@ -390,7 +529,16 @@ public class AV_Static
 	//A method for calculating the distance between two points.
 	public static double Calculate_Distance(metHeuPoint p1, metHeuPoint p2)
 	{
-		return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+		double lat1 = p1.x, lon1 = p1.y, lat2 = p2.x, lon2 = p2.y;
+		double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        lat1 = Math.toRadians(lat1);
+        lat2 = Math.toRadians(lat2);
+ 
+        double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        return R * c;
+		//return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 	}
 	
 	//A method for calculating the travel time between two points.

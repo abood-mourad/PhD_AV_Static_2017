@@ -43,10 +43,17 @@ public class metHeuMeetingPoint
 		this.service_time = 0;
 	}
 	
-	//A constructor to create a meeting point object with parameters (location).
+	//A constructor to create a meeting point object with parameters: a meeting point object (location).
 	public metHeuMeetingPoint(metHeuMeetingPoint loc)
 	{
 		this.location = new metHeuPoint(loc.location.x,loc.location.y);
+		this.service_time = 0;
+	}
+	
+	//A constructor to create a meeting point object with parameters: a point (origin or destination).
+	public metHeuMeetingPoint(metHeuPoint loc)
+	{
+		this.location = loc;
 		this.service_time = 0;
 	}
 	
