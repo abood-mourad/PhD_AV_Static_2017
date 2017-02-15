@@ -33,6 +33,10 @@ public class metHeuOffer extends metHeuAnnounce
 	public int num_seats;										//represents the number of available seats.
 	
 	public ArrayList<metHeuMatch> feasible_matches;				//represents the set of feasible matches for the offer, to be filled during the preprocessing.
+	
+	public Boolean is_round;									//represents a flag to indicate whether this offer is a round trip.
+	
+	public int tmp_id;											//used to save the old id value of an artificial offer.
 		
 	// **************************************************************************************************
 	// CONSTRUCTORS
@@ -44,6 +48,7 @@ public class metHeuOffer extends metHeuAnnounce
 		this.origin = new metHeuPoint();
 		this.destination = new metHeuPoint();
 		this.feasible_matches = new ArrayList<metHeuMatch>();
+		this.is_round = false;
 	}
 	
 	//A constructor to create an offer (AV owner) object with parameters (origin, destination, etime, ltime, mawimum duration, number of available seats).
@@ -57,6 +62,7 @@ public class metHeuOffer extends metHeuAnnounce
 		this.max_duration = duration;
 		this.num_seats = seats;
 		this.feasible_matches = new ArrayList<metHeuMatch>();
+		this.is_round = false;
 	}
 						
 	// **************************************************************************************************

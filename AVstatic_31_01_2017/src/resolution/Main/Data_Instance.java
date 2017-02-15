@@ -33,6 +33,8 @@ public class Data_Instance
 	// VARIABLES
 	// **************************************************************************************************
 		
+	public String instance_id;											//represents the id of the instance.
+	
 	public ArrayList<metHeuOffer> offers;								//represents the set of offers available in the instance.
 	
 	public ArrayList<metHeuRequest> requests;							//represents the set of requests available in the instance.
@@ -58,8 +60,7 @@ public class Data_Instance
 	//A method that returns the number of participants.
 	public int getNbP()
 	{
-		//TO DO
-		return 0;
+		return this.offers.size() + this.requests.size();
 	}
 	
 	//A method that writes the data instance into a file.

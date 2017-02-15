@@ -40,6 +40,8 @@ public class metHeuRequest extends metHeuAnnounce
 	
 	public double tmp_distance;									//represents the distance between request origin and a given point(to be used later to temporarily store updated distances).
 	
+	public Boolean is_artificial;								//represents a flag to indicate whether this request is transfered to an offer or not.
+	
 	// **************************************************************************************************
 	// CONSTRUCTORS
 	// **************************************************************************************************
@@ -54,6 +56,7 @@ public class metHeuRequest extends metHeuAnnounce
 		this.MP_Arc = new ArrayList<metHeuMeetingArc>();
 		this.feasible_matches = new ArrayList<metHeuMatch>();
 		this.tmp_distance = Double.MAX_VALUE;
+		this.is_artificial = false;
 	}
 		
 	//A constructor to create an offer (AV owner) object with parameters (origin, destination, etime, ltime, mawimum duration, number of available seats).
@@ -70,6 +73,7 @@ public class metHeuRequest extends metHeuAnnounce
 		this.MP_Arc = new ArrayList<metHeuMeetingArc>();
 		this.feasible_matches = new ArrayList<metHeuMatch>();
 		this.tmp_distance = Double.MAX_VALUE;
+		this.is_artificial = false;
 	}
 							
 	// **************************************************************************************************
