@@ -124,7 +124,7 @@ abstract class metHeuMP
 				//Save (objective value, variable values, time) to a file using the printStream.
 				DecimalFormat df = new DecimalFormat("#.###");
 				printStream.println("Instance \t Zones \t MPs \t Offers \t Requests \t Exec_Time(s) \t Participants \t Rate(%) \t Savings(km)");
-				printStream.println(data.instance_id + "\t\t 865 \t" + data.meeting_points.size() + "\t" + data.offers.size() + "\t\t" + data.requests.size() + "\t\t" + df.format((System.currentTimeMillis()-t)*0.001) + "\t\t\t" + Obj_Val + "\t\t\t" + df.format((Obj_Val/data.requests.size())*100) + "\t\t" + df.format(global_saving));
+				printStream.println(data.instance_id + "\t\t 865 \t" + data.meeting_points.size() + "\t\t" + data.offers.size() + "\t\t" + data.requests.size() + "\t\t" + df.format((System.currentTimeMillis()-t)*0.001) + "\t\t\t" + Obj_Val + "\t\t\t" + df.format((Obj_Val/data.requests.size())*100) + "\t\t" + df.format(global_saving));
 				printStream.println("==============================================================================================================");
 			}
 			else 

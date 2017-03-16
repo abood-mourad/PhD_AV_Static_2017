@@ -48,19 +48,26 @@ public class AV_Static
 	public static double uplift = 0.1;	
 	public static double flexibility = 0.5;										//To be added to e_time when calculating l_time.
 	public static double MP_service_time = 0.033;
-	public static int version = 4;												//Denotes the instance version to be tested.
+	public static int version = 0;												//Denotes the instance version to be tested.
 
 	public static void main(String[] args) throws FileNotFoundException
 	{
 		//Create a print stream to the file where results will be written.
 		File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/Result_BR_" + version + ".txt");
+		//File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/Result_BT_" + version + ".txt");
+		//File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/Result_BI_" + version + ".txt");
 		PrintStream printStream = new PrintStream(f);
 		//Build data instances based on original files, save generated instances into new files.
-		//Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
+		Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
+		//Build_Instances("BerlinTiergarten");											//Build different instances for BerlinTiergarten.
 		//Build_Instances("Birmingham");											//Build different instances for Birmingham.
 		//Read one data instance from file and store it in a Data_Instance object.
 		Data_Instance instance = Read_Instance("BerlinCenter", version);				//Read a Data_Instance object from a file.
+		//Data_Instance instance = Read_Instance("BerlinTiergarten", version);					//Read a Data_Instance object from a file.
+		//Data_Instance instance = Read_Instance("Birmingham", version);					//Read a Data_Instance object from a file.
 		instance.instance_id = "BR_" + version;
+		//instance.instance_id = "BT_" + version;
+		//instance.instance_id = "BI_" + version;
 		long t= System.currentTimeMillis();										//Create a time variable to calculate excution time.
 		//Call the preprocessing procedure passing the Data_Instance as an input.
 		ArrayList<metHeuMatch> final_matches = Match_Gen_Algo_V1(instance);		//Store the set of feasible matches returned by the preprocession.
@@ -113,7 +120,7 @@ public class AV_Static
 				ArrayList<metHeuMeetingPoint> meeting_points = new ArrayList<metHeuMeetingPoint>();
 				for(int z = 0 ; z < zone_centers.size() ; z++)
 				{
-					for(int tmp = 0 ; tmp < 4 ; tmp++)
+					for(int tmp = 0 ; tmp < 8 ; tmp++)
 					{
 						//Create meeting point and add it to the list.
 						double w = radius*Math.sqrt(Math.random());
@@ -151,7 +158,7 @@ public class AV_Static
 				for(int row = 0 ; row < zone_centers.size() ; row++)
 				{
 					AVG_line = AVGbr.readLine();											//Read the AVGs associated with the current zone.
-					String[] AVG_parts = AVG_line.split(";");								//Split line into different AVG records (destination : AVG).
+					String[] AVG_parts = AVG_line.trim().split(";");								//Split line into different AVG records (destination : AVG).
 					for(int des = 0 ; des < AVG_parts.length -1 ; des++)					//For every AVG record.
 					{
 						String[] AVG_des = AVG_parts[des].split(":");						//Split AVG record into a destination and a AVG value.
