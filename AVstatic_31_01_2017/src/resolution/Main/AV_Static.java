@@ -38,25 +38,37 @@ import java.util.Random;
 public class AV_Static 
 {
 	public static IloCplex solver;
-	public static double radius = 1.770274;
-	public static double speed = 24.14;
+	public static double radius = 1.770274;										//1.770274										
+	public static double speed = 24.14;											//24.14
 	public static double max_duration = 0.35;
 	public static int num_seats = 3;
 	public static double max_walk = 0.804;
 	public static final double R = 6372.8; 										//Kilometers.
 	public static double share_percentage = 0.055;								//Percentage of trips willing to be shared.
+	public static double uplift = 0.1;	
+	public static double flexibility = 0.5;										//To be added to e_time when calculating l_time.
+	public static double MP_service_time = 0.033;
+	public static int version = 0;												//Denotes the instance version to be tested.
 
 	public static void main(String[] args) throws FileNotFoundException
 	{
 		//Create a print stream to the file where results will be written.
-		File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/test.txt");
+		File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/Result_BR_" + version + ".txt");
+		//File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/Result_BT_" + version + ".txt");
+		//File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/Result_BI_" + version + ".txt");
 		PrintStream printStream = new PrintStream(f);
 		//Build data instances based on original files, save generated instances into new files.
-		//Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
+		Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
+		//Build_Instances("BerlinTiergarten");											//Build different instances for BerlinTiergarten.
 		//Build_Instances("Birmingham");											//Build different instances for Birmingham.
-		long t= System.currentTimeMillis();										//Create a time variable to calculate excution time.
 		//Read one data instance from file and store it in a Data_Instance object.
-		Data_Instance instance = Read_Instance("BerlinCenter", 0);				//Read a Data_Instance object from a file.
+		Data_Instance instance = Read_Instance("BerlinCenter", version);				//Read a Data_Instance object from a file.
+		//Data_Instance instance = Read_Instance("BerlinTiergarten", version);					//Read a Data_Instance object from a file.
+		//Data_Instance instance = Read_Instance("Birmingham", version);					//Read a Data_Instance object from a file.
+		instance.instance_id = "BR_" + version;
+		//instance.instance_id = "BT_" + version;
+		//instance.instance_id = "BI_" + version;
+		long t= System.currentTimeMillis();										//Create a time variable to calculate excution time.
 		//Call the preprocessing procedure passing the Data_Instance as an input.
 		ArrayList<metHeuMatch> final_matches = Match_Gen_Algo_V1(instance);		//Store the set of feasible matches returned by the preprocession.
 		//Call the solve method of the matching problem passing the set of feasible matches as an input.
@@ -70,11 +82,8 @@ public class AV_Static
 		}
 		metHeuMPConstrained matching_problem = new metHeuMPConstrained(instance, final_matches, solver);		//Create a matching problem object with input instance, final matches returned by the algorithm and a solver object as parameters.
 		matching_problem.Solve(printStream, t);
-		//Save the solution returned by the matching problem.
-		//TO DO
-		//Write solution to a file (output).
-		//TO DO
 		//Close the printstream.
+		printStream.close();
 	}
 	
 	//A method that builds multiple Data Instance objects to be used for running the model later.
@@ -111,7 +120,7 @@ public class AV_Static
 				ArrayList<metHeuMeetingPoint> meeting_points = new ArrayList<metHeuMeetingPoint>();
 				for(int z = 0 ; z < zone_centers.size() ; z++)
 				{
-					for(int tmp = 0 ; tmp < 4 ; tmp++)
+					for(int tmp = 0 ; tmp < 8 ; tmp++)
 					{
 						//Create meeting point and add it to the list.
 						double w = radius*Math.sqrt(Math.random());
@@ -120,42 +129,10 @@ public class AV_Static
 						mp.location.id = counter++;
 						mp.location.x = zone_centers.get(z).x + (w * Math.cos(u));
 						mp.location.y = zone_centers.get(z).y + (w * Math.sin(u));
+						mp.service_time = MP_service_time;
 						MPwr.write(mp.location.id + "\t" + mp.location.x + "\t" + mp.location.y + "\t\t" + mp.service_time);
 						MPwr.newLine();
 					}
-					/*double angle = Math.random()*Math.PI*2;
-					//Create Point in X+Y+ space and add it to the list.
-					metHeuMeetingPoint mp1 = new metHeuMeetingPoint();
-					mp1.location.id = counter++;
-					mp1.location.x = zone_centers.get(z).x + Math.cos(angle)*radius;
-					mp1.location.y = zone_centers.get(z).y + Math.sin(angle)*radius;
-					MPwr.write(mp1.location.id + "\t" + mp1.location.x + "\t" + mp1.location.y + "\t\t" + mp1.service_time);
-					MPwr.newLine();
-					meeting_points.add(mp1);
-					//Create Point in X+Y- space and add it to the list.
-					metHeuMeetingPoint mp2 = new metHeuMeetingPoint();
-					mp2.location.id = counter++;
-					mp2.location.x = zone_centers.get(z).x + Math.cos(angle)*radius;
-					mp2.location.y = zone_centers.get(z).y - Math.sin(angle)*radius;
-					MPwr.write(mp2.location.id + "\t" + mp2.location.x + "\t" + mp2.location.y + "\t\t" + mp2.service_time);
-					MPwr.newLine();
-					meeting_points.add(mp2);
-					//Create Point in X-Y+ space and add it to the list.
-					metHeuMeetingPoint mp3 = new metHeuMeetingPoint();
-					mp3.location.id = counter++;
-					mp3.location.x = zone_centers.get(z).x - Math.cos(angle)*radius;
-					mp3.location.y = zone_centers.get(z).y + Math.sin(angle)*radius;
-					MPwr.write(mp3.location.id + "\t" + mp3.location.x + "\t" + mp3.location.y + "\t\t" + mp3.service_time);
-					MPwr.newLine();
-					meeting_points.add(mp3);
-					//Create Point in X-Y- space and add it to the list.
-					metHeuMeetingPoint mp4 = new metHeuMeetingPoint();
-					mp4.location.id = counter++;
-					mp4.location.x = zone_centers.get(z).x - Math.cos(angle)*radius;
-					mp4.location.y = zone_centers.get(z).y - Math.sin(angle)*radius;
-					MPwr.write(mp4.location.id + "\t" + mp4.location.x + "\t" + mp4.location.y + "\t\t" + mp4.service_time);
-					MPwr.newLine();
-					meeting_points.add(mp4);*/
 				}
 				MPwr.close();
 				//Generate OD trips.
@@ -181,7 +158,7 @@ public class AV_Static
 				for(int row = 0 ; row < zone_centers.size() ; row++)
 				{
 					AVG_line = AVGbr.readLine();											//Read the AVGs associated with the current zone.
-					String[] AVG_parts = AVG_line.split(";");								//Split line into different AVG records (destination : AVG).
+					String[] AVG_parts = AVG_line.trim().split(";");								//Split line into different AVG records (destination : AVG).
 					for(int des = 0 ; des < AVG_parts.length -1 ; des++)					//For every AVG record.
 					{
 						String[] AVG_des = AVG_parts[des].split(":");						//Split AVG record into a destination and a AVG value.
@@ -203,7 +180,8 @@ public class AV_Static
 								//Generate time window.
 								Random r = new Random();
 								offer1.e_time = r.nextGaussian()*0.5+7.5;					//Earliest departure time.
-								offer1.l_time = offer1.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(row), zone_centers.get(Integer.parseInt(AVG_des[0].trim()))));
+								offer1.l_time = offer1.e_time + Calculate_Travel_Time(Calculate_Distance(offer1.origin, offer1.destination)) + flexibility;
+								//offer1.l_time = offer1.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(row), zone_centers.get(Integer.parseInt(AVG_des[0].trim())))) + flexibility;
 								//Generate max duration and num of seats.
 								offer1.max_duration = (offer1.l_time - offer1.e_time) + max_duration;
 								offer1.num_seats = num_seats;
@@ -220,7 +198,8 @@ public class AV_Static
 								offer2.destination.y = offer2.origin.y;
 								//Generate time window.
 								offer2.e_time = r.nextGaussian()*0.5+17.5;					//Earliest departure time.
-								offer2.l_time = offer2.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(Integer.parseInt(AVG_des[0].trim())) , zone_centers.get(row)));
+								offer2.l_time = offer2.e_time + Calculate_Travel_Time(Calculate_Distance(offer2.origin, offer2.destination)) + flexibility;
+								//offer2.l_time = offer2.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(Integer.parseInt(AVG_des[0].trim())) , zone_centers.get(row))) + flexibility;
 								//Generate max duration and num of seats.
 								offer2.max_duration = (offer2.l_time - offer2.e_time) + max_duration;
 								offer2.num_seats = num_seats;
@@ -260,7 +239,8 @@ public class AV_Static
 								//Generate time window.
 								Random r = new Random();
 								request1.e_time = r.nextGaussian()*0.5+7.5;					//Earliest departure time.
-								request1.l_time = request1.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(row), zone_centers.get(Integer.parseInt(AVG_des[0].trim()))));		//Latest arrival time.
+								request1.l_time = request1.e_time + Calculate_Travel_Time(Calculate_Distance(request1.origin, request1.destination)) + flexibility;
+								//request1.l_time = request1.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(row), zone_centers.get(Integer.parseInt(AVG_des[0].trim())))) + flexibility;		//Latest arrival time.
 								//Assign max walking time.
 								request1.max_walk = max_walk;
 								//Add trip announcement (request) to file.
@@ -276,7 +256,8 @@ public class AV_Static
 								request2.destination.y = request1.origin.y;
 								//Generate time window.
 								request2.e_time = r.nextGaussian()*0.5+17.5;				//Earliest departure time.
-								request2.l_time = request2.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(Integer.parseInt(AVG_des[0].trim())),zone_centers.get(row)));		//Latest arrival time.
+								request2.l_time = request2.e_time + Calculate_Travel_Time(Calculate_Distance(request2.origin, request2.destination)) + flexibility;
+								//request2.l_time = request2.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(Integer.parseInt(AVG_des[0].trim())),zone_centers.get(row))) + flexibility;		//Latest arrival time.
 								//Assign max walking time.
 								request2.max_walk = max_walk;
 								//Add trip announcement (request) to file.
@@ -294,7 +275,8 @@ public class AV_Static
 								request3.destination.y = zone_centers.get(Integer.parseInt(AVG_des[0].trim())).y + (w * Math.sin(u));
 								//Generate time window (uniformly distributed between 10 AM and 16 PM).
 								request3.e_time = r.nextDouble()*6+10;
-								request3.l_time = request3.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(row), zone_centers.get(Integer.parseInt(AVG_des[0].trim()))));
+								request3.l_time = request3.e_time + Calculate_Travel_Time(Calculate_Distance(request3.origin, request3.destination)) + flexibility;
+								//request3.l_time = request3.e_time + Calculate_Travel_Time(Calculate_Distance(zone_centers.get(row), zone_centers.get(Integer.parseInt(AVG_des[0].trim())))) + flexibility;
 								//Assign max walking time.
 								request3.max_walk = max_walk;
 								//Add trip announcement (request) to file.
@@ -397,32 +379,6 @@ public class AV_Static
 					}
 				}
 			}
-			//
-			ArrayList<metHeuMeetingArc> temp = new ArrayList<metHeuMeetingArc>();
-			//For every request, find the set of feasible meeting point arcs. //Better to do this directly in the algorithm for memory reasons.
-			for(int req = 0 ; req < instance.requests.size() ; req++)
-			{
-				//Add origin-destination MP arc.
-				/*metHeuMeetingArc arc1 = new metHeuMeetingArc(new metHeuMeetingPoint(instance.requests.get(req).origin), new metHeuMeetingPoint( instance.requests.get(req).destination));
-				instance.requests.get(req).MP_Arc.add(arc1);*/
-				for(int p = 0; p < instance.requests.get(req).MP_Pick.size() ; p++)					//For every feasible pickup MP.
-				{
-					//Add pickup-destination arc.
-					/*metHeuMeetingArc arc2 = new metHeuMeetingArc(instance.requests.get(req).MP_Pick.get(p), new metHeuMeetingPoint(instance.requests.get(req).destination));
-					instance.requests.get(req).MP_Arc.add(arc2);*/
-					for(int d = 0 ; d < instance.requests.get(req).MP_Drop.size() ; d++)			//For every feasible drop-off MP.
-					{
-						//Add origin-drop MP arc.
-						/*metHeuMeetingArc arc3 = new metHeuMeetingArc(new metHeuMeetingPoint(instance.requests.get(req).origin), instance.requests.get(req).MP_Drop.get(d));
-						instance.requests.get(req).MP_Arc.add(arc3);*/
-						//Add pick MP-drop MP arc.
-						metHeuMeetingArc arc4 = new metHeuMeetingArc(instance.requests.get(req).MP_Pick.get(p), instance.requests.get(req).MP_Drop.get(d));
-						instance.requests.get(req).MP_Arc.add(arc4);
-						temp.add(arc4);
-					}
-				}
-			}
-			System.out.print(temp.size());
 		} catch (IOException e) 
 		{
 			// TODO Auto-generated catch block
@@ -436,13 +392,11 @@ public class AV_Static
 	{
 		ArrayList<metHeuMatch> final_matches = new ArrayList<metHeuMatch>();	//Create an ArrayList to store the list of final matches to be returned by the algorithm.
 		ArrayList<metHeuOffer> extended_offers = new ArrayList<metHeuOffer>();	//Create an ArrayList to store offers for direct trips and the artificial round trip offers to be constructed.
-		//TO DO
-		//Save meeting points in k-d tree.
 		//for each offer in the list of offers
 		for(int o = 0 ; o < instance.offers.size() ; o++)
 		{
 			//if the offer is a direct trip then 
-			if((instance.offers.get(o).origin.x == instance.offers.get(o).destination.x) && (instance.offers.get(o).origin.y == instance.offers.get(o).destination.y))
+			if((instance.offers.get(o).origin.x != instance.offers.get(o).destination.x) || (instance.offers.get(o).origin.y != instance.offers.get(o).destination.y))
 			{
 				extended_offers.add(instance.offers.get(o)); 						 	//add offer (direct trip) to an extended list
 			}
@@ -450,54 +404,193 @@ public class AV_Static
 			{
 				metHeuPoint origin = new metHeuPoint(instance.offers.get(o).origin.x,instance.offers.get(o).origin.y);		//Initialize tmp origin with current offer origin, to be updated iteratively.
 				//Sort riders with respect to their distance from tmp origin.
-				ArrayList<metHeuRequest> sorted_request = Sort_Riders(instance.requests, instance.offers.get(o).origin);
+				ArrayList<metHeuRequest> sorted_requests = Sort_Riders(instance.requests, instance.offers.get(o).origin);
 				//Establish a round trip offer by concatenating some riders as artificial owners.
-				//TO DO: Check ALGO !
+				double total = 0;
+				int count = 0;
+				while((instance.offers.get(o).e_time + total < instance.offers.get(o).l_time) && (count < sorted_requests.size()))								//While it is still possible to add new artificial trips.
+				{
+					if((sorted_requests.get(count).e_time > instance.offers.get(o).e_time + Calculate_Travel_Time(Calculate_Distance(origin, sorted_requests.get(count).origin)) + total) && (sorted_requests.get(count).l_time + Calculate_Travel_Time(Calculate_Distance(sorted_requests.get(count).destination, instance.offers.get(o).destination)) < instance.offers.get(o).l_time))
+					{
+						//Create new artificial trip offer.
+						metHeuOffer offer = new metHeuOffer();
+						offer.id = instance.offers.get(o).id;
+						offer.tmp_id = sorted_requests.get(count).id;
+						offer.origin = sorted_requests.get(count).origin;
+						offer.destination = sorted_requests.get(count).destination;
+						offer.e_time = sorted_requests.get(count).e_time;
+						offer.l_time = sorted_requests.get(count).l_time;
+						offer.max_duration = (sorted_requests.get(count).l_time - sorted_requests.get(count).e_time) - max_duration;
+						offer.num_seats = num_seats;
+						offer.is_round = true;
+						//Add the new artificial trip offer to the extended list of offers.
+						extended_offers.add(offer);
+						//Increase total duration.
+						total += Calculate_Travel_Time(Calculate_Distance(origin, offer.origin)) + Calculate_Travel_Time(Calculate_Distance(offer.origin, offer.destination));
+						//Assign new origin point.
+						origin = new metHeuPoint(offer.destination.x, offer.destination.y);
+						//Exclude rider from instance list and from sorted list.
+						sorted_requests.remove(count);
+						for(int y = 0 ; y < instance.requests.size() ; y++)
+						{
+							if(instance.requests.get(y).id == sorted_requests.get(count).id)
+							{
+								instance.requests.get(y).is_artificial = true;
+								break;
+							}
+						}
+						//Resort riders according to the new origin.
+						sorted_requests = Sort_Riders(sorted_requests, origin);
+						count = 0;
+					}
+					else
+					{
+						count++;
+					}
+				}
 			}
 		}
-		//for each request (rider) in the list of requests
-		for(int j = 0 ; j < instance.requests.size() ; j++)
+		//
+		//ArrayList<metHeuMeetingArc> temp = new ArrayList<metHeuMeetingArc>();
+		//For every request, find the set of feasible meeting point arcs. (Better to do this directly in the algorithm for memory reasons)
+		for(int req = 0 ; req < instance.requests.size() ; req++)
 		{
-			instance.requests.get(j).MP_Arc = Find_Rider_Feasible_Arcs(instance, instance.requests.get(j));      //search the MP tree and store the feasible MP arcs for the current request.
+			if(instance.requests.get(req).is_artificial == false)
+			{
+				for(int p = 0; p < instance.requests.get(req).MP_Pick.size() ; p++)					//For every feasible pickup MP.
+				{
+					for(int d = 0 ; d < instance.requests.get(req).MP_Drop.size() ; d++)			//For every feasible drop-off MP.
+					{
+						//Add pick MP-drop MP arc.
+						metHeuMeetingArc arc4 = new metHeuMeetingArc(instance.requests.get(req).MP_Pick.get(p), instance.requests.get(req).MP_Drop.get(d));
+						instance.requests.get(req).MP_Arc.add(arc4);
+						//temp.add(arc4);
+					}
+				}
+			}
+		}
+		//System.out.print(temp.size());
+		//Update instance offers with the extended list of offers.
+		instance.offers.clear();
+		for(int nf = 0 ; nf < extended_offers.size() ; nf++)
+		{
+			//System.out.println(extended_offers.get(nf).id);
+			instance.offers.add(extended_offers.get(nf));
 		}
 		//for each offer in the extended list of offers
-		for(int i = 0 ; i < extended_offers.size() ; i++)
+		for(int i = 0 ; i < instance.offers.size() ; i++)
 		{
+			Boolean matched = false; 
 			//obtain compatible riders with the offer
 			ArrayList<metHeuRequest> feasible_riders = new ArrayList<metHeuRequest>();	//Create an ArrayList to store the set of feasible riders for the offer.
-			int best_savings;															//Create a variable to save the value of the best distance savings obtained for the triplet (offer, request, arc).
+			double best_savings;															//Create a variable to save the value of the best distance savings obtained for the triplet (offer, request, arc).
 			//for each request (rider) in the list of requests
 			for(int j = 0 ; j < instance.requests.size() ; j++)
 			{
-				best_savings = 0;
-				//for each rider meeting point arc
-				for(int a = 0 ; a < instance.requests.get(j).MP_Arc.size() ; a++)
+				if(instance.requests.get(j).is_artificial == false)
 				{
-					//if the match of the offer, the rider and the meeting point arc is feasible then
-						//store meeting point arc
-						//compute distance savings
-						//if the computed distance savings > best match distance savings found so far then
-							//update best match distance savings
-							//update best match
-				}
-				if(best_savings > 0)													//If best match distance savings > 0 then
-				{
-					//append match to match list
-					feasible_riders.add(instance.requests.get(j)); 						//Append rider to feasible rider list
+					best_savings = 0;
+					metHeuMatch best_match = new metHeuMatch();
+					//for each rider meeting point arc
+					for(int a = 0 ; a < instance.requests.get(j).MP_Arc.size() ; a++)
+					{
+						//Here is the feasibility check of every possible match.
+						//if the match of the offer, the rider and the meeting point arc is feasible then:
+						if((Math.max(instance.requests.get(j).e_time + Calculate_Travel_Time(Calculate_Distance(instance.requests.get(j).origin, instance.requests.get(j).MP_Arc.get(a).arc_pick.location)), instance.offers.get(i).e_time + Calculate_Travel_Time(Calculate_Distance(instance.offers.get(i).origin, instance.requests.get(j).MP_Arc.get(a).arc_pick.location))) <= Math.min(instance.requests.get(j).l_time - (Calculate_Travel_Time(Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_pick.location, instance.requests.get(j).MP_Arc.get(a).arc_drop.location)) + Calculate_Travel_Time(Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_drop.location, instance.requests.get(j).destination)) + (2*instance.requests.get(j).MP_Arc.get(a).arc_pick.service_time)), instance.offers.get(i).l_time - (Calculate_Travel_Time(Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_pick.location, instance.requests.get(j).MP_Arc.get(a).arc_drop.location)) + Calculate_Travel_Time(Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_drop.location, instance.offers.get(i).destination))))) && (Calculate_Travel_Time(Calculate_Distance(instance.offers.get(i).origin, instance.requests.get(j).MP_Arc.get(a).arc_pick.location)) + Calculate_Travel_Time(Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_pick.location, instance.requests.get(j).MP_Arc.get(a).arc_drop.location)) + Calculate_Travel_Time(Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_drop.location, instance.offers.get(i).destination)) + (2*instance.requests.get(j).MP_Arc.get(a).arc_drop.service_time) <= instance.offers.get(i).max_duration))
+						{
+							//store meeting point arc
+							//compute distance savings
+							double savings = Calculate_Distance(instance.offers.get(i).origin, instance.offers.get(i).destination) - (Calculate_Distance(instance.offers.get(i).origin, instance.requests.get(j).MP_Arc.get(a).arc_pick.location) + Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_pick.location, instance.requests.get(j).MP_Arc.get(a).arc_drop.location) + Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_drop.location, instance.offers.get(i).destination)) + (Calculate_Distance(instance.requests.get(j).origin, instance.requests.get(j).destination) - (Calculate_Distance(instance.requests.get(j).origin, instance.requests.get(j).MP_Arc.get(a).arc_pick.location) + Calculate_Distance(instance.requests.get(j).MP_Arc.get(a).arc_drop.location, instance.requests.get(j).destination)));
+							//if the computed distance savings > best match distance savings found so far then:
+							if(savings > best_savings)
+							{
+								best_savings = savings;										//update best match distance savings.
+								//update best match.
+								best_match.offer = instance.offers.get(i);
+								best_match.requests.add(instance.requests.get(j));
+								best_match.arc = instance.requests.get(j).MP_Arc.get(a);
+								best_match.dist_save = best_savings*uplift;
+								best_match.num_participants = 2;
+							}
+						}
+					}
+					if(best_savings > 0)													//If best match distance savings > 0 then
+					{
+						//Add match to participants' lists of matches Ei, Ej.
+						instance.offers.get(i).feasible_matches.add(best_match);
+						instance.requests.get(j).feasible_matches.add(best_match);
+						feasible_riders.add(instance.requests.get(j)); 						//Append rider to feasible rider list
+						final_matches.add(best_match);										//append match to match list
+						matched = true;
+					}
 				}
 			}
+			if((!matched) && instance.offers.get(i).is_round)								//Add a single artificial owner match.
+			{
+				metHeuMatch art_match = new metHeuMatch();
+				art_match.offer = instance.offers.get(i);
+				metHeuRequest redundant = new metHeuRequest(instance.offers.get(i).tmp_id, instance.offers.get(i).origin, instance.offers.get(i).destination, instance.offers.get(i).e_time, instance.offers.get(i).l_time, 0);
+				art_match.requests.add(redundant);
+				art_match.arc = new metHeuMeetingArc(new metHeuMeetingPoint(instance.offers.get(i).origin), new metHeuMeetingPoint(instance.offers.get(i).destination));
+				art_match.dist_save = 0;
+				art_match.num_participants = 1;
+				redundant.feasible_matches.add(art_match);
+				instance.offers.get(i).feasible_matches.add(art_match);
+				final_matches.add(art_match);
+			}
+			//System.out.print(feasible_riders.size());
 			if(feasible_riders.size() > 1)										//if number of feasible riders > 1 then
 			{
+				ArrayList<metHeuMatch> matches_L1 = new ArrayList<metHeuMatch>(instance.offers.get(i).feasible_matches);
 				//for k=2, .., offer.capacity 
-				for(int k = 2 ; k < extended_offers.get(i).num_seats ; k++)
+				for(int k = 2 ; k < instance.offers.get(i).num_seats ; k++)
 				{
-					//retrieve meeting point arcs
-					//remove meeting point arcs that are feasible for less than k riders
-					//try to construct new matches with k riders
-					//if new match found then
-						//compute distance savings
-						//if distance savings > 0 then
-							//append match to match list
+					//Retrieve meeting point arcs.
+					ArrayList<metHeuMatch> matches_ALL = new ArrayList<metHeuMatch>(instance.offers.get(i).feasible_matches);
+					//Remove meeting point arcs that are feasible for less than k riders.
+					for(int l = 0 ; l < matches_ALL.size() ; l++)
+					{
+						if(matches_ALL.get(l).requests.size() < k-1)
+						{
+							matches_ALL.remove(l);
+						}
+					}
+					//Try to construct new matches with k riders.
+					for(int l1 = 0 ; l1 < matches_ALL.size() ; l1++)
+					{
+						for(int l2 = 0 ; l2 < matches_L1.size() ; l2++)
+						{
+							//If a new match found (feasibility check) then:
+							if((!matches_ALL.contains(matches_L1.get(l2))) && Is_Time_Compatible(instance.offers.get(i), matches_ALL.get(l1).requests, matches_L1.get(l2).requests, matches_ALL.get(l1).arc))
+							{
+								//Compute distance savings.
+								double saving = Calculate_Distance(instance.offers.get(i).origin, instance.offers.get(i).destination) - (Calculate_Distance(instance.offers.get(i).origin, matches_ALL.get(l1).arc.arc_pick.location) + Calculate_Distance(matches_ALL.get(l1).arc.arc_pick.location, matches_ALL.get(l1).arc.arc_drop.location) + Calculate_Distance(matches_ALL.get(l1).arc.arc_drop.location, instance.offers.get(i).destination)) + (Calculate_Distance(matches_L1.get(l2).requests.get(0).origin, matches_L1.get(l2).requests.get(0).destination) - (Calculate_Distance(matches_L1.get(l2).requests.get(0).origin, matches_ALL.get(l1).arc.arc_pick.location) + Calculate_Distance(matches_ALL.get(l1).arc.arc_drop.location, matches_L1.get(l2).requests.get(0).destination)));
+								for(int l3 = 0 ; l3 < matches_ALL.get(l1).requests.size() ; l3++)
+								{
+									saving += Calculate_Distance(matches_L1.get(l2).requests.get(l3).origin, matches_L1.get(l2).requests.get(l3).destination) - (Calculate_Distance(matches_L1.get(l2).requests.get(l3).origin, matches_ALL.get(l1).arc.arc_pick.location) + Calculate_Distance(matches_ALL.get(l1).arc.arc_drop.location, matches_L1.get(l2).requests.get(l3).destination));
+								}
+								//If distance savings > 0 then:
+								if(saving > 0)
+								{
+									//Create new match with k participants.
+									metHeuMatch match = new metHeuMatch();
+									match.offer = matches_ALL.get(l1).offer;
+									match.requests = new ArrayList<metHeuRequest>(matches_ALL.get(l1).requests);
+									match.requests.add(matches_L1.get(l2).requests.get(0));
+									match.arc = matches_ALL.get(l1).arc;
+									match.dist_save = saving * uplift;
+									match.num_participants = matches_ALL.get(l1).num_participants + 1;
+									//Append match to match lists (offer, requests and final list).
+									instance.offers.get(i).feasible_matches.add(match);
+									for(int l4 = 0 ; l4 < match.requests.size() ; l4++)
+									{
+										instance.requests.get(match.requests.get(l4).id).feasible_matches.add(match);
+									}
+									final_matches.add(match);
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -505,12 +598,26 @@ public class AV_Static
 		return final_matches;													//Return the final list of matches.
 	}
 	
-	//A method that returns the set of feasible meeting point arcs for a given rider.
-	public static ArrayList<metHeuMeetingArc> Find_Rider_Feasible_Arcs(Data_Instance instance, metHeuRequest rider)
+	//A method that checks the time compatibility of a match (participants).
+	public static boolean Is_Time_Compatible(metHeuOffer offer, ArrayList<metHeuRequest> request1, ArrayList<metHeuRequest> request2, metHeuMeetingArc arc)
 	{
-		ArrayList<metHeuMeetingArc> feasible_arcs = new ArrayList<metHeuMeetingArc>();
-		//TO DO
-		return feasible_arcs;
+		double e_o = offer.e_time + Calculate_Distance(offer.origin, arc.arc_pick.location);
+		double l_o = offer.l_time - (Calculate_Distance(arc.arc_pick.location, arc.arc_drop.location) + Calculate_Distance(arc.arc_drop.location, offer.destination) + (2*arc.arc_pick.service_time));
+		double max_e_r = request2.get(0).e_time + Calculate_Distance(request2.get(0).origin, arc.arc_pick.location);
+		double min_l_r = request2.get(0).l_time - (Calculate_Distance(arc.arc_pick.location, arc.arc_drop.location) + Calculate_Distance(arc.arc_drop.location, request2.get(0).destination) + (2*arc.arc_pick.service_time));
+		double tmp_e_r, tmp_l_r = 0;
+		for(int r = 0 ; r < request1.size() ; r++)
+		{
+			tmp_e_r = request1.get(r).e_time + Calculate_Distance(request1.get(r).origin, arc.arc_pick.location);
+			tmp_l_r = request1.get(r).l_time - (Calculate_Distance(arc.arc_pick.location, arc.arc_drop.location) + Calculate_Distance(arc.arc_drop.location, request1.get(r).destination) + (2*arc.arc_pick.service_time));
+			max_e_r = Math.max(max_e_r, tmp_e_r);
+			min_l_r = Math.min(min_l_r, tmp_l_r);
+		}
+		if(Math.max(e_o, max_e_r) <= Math.min(l_o, min_l_r))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	//A method for sorting riders according to their distance from a certain point.
@@ -537,7 +644,8 @@ public class AV_Static
  
         double a = Math.pow(Math.sin(dLat / 2),2) + Math.pow(Math.sin(dLon / 2),2) * Math.cos(lat1) * Math.cos(lat2);
         double c = 2 * Math.asin(Math.sqrt(a));
-        return R * c;
+        //System.out.print(R * c * uplift + "\n");
+        return R * c * uplift;
 		//return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 	}
 	

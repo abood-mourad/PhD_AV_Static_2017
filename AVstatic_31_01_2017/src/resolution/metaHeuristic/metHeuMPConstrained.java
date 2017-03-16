@@ -79,7 +79,7 @@ public class metHeuMPConstrained extends metHeuMP
 				{
 					sum.addTerm(1, data.offers.get(i).feasible_matches.get(j).x);		
 				}
-				solver.addLe(1, sum);										//Add offer (owner) constraint to the solver.
+				solver.addGe(1, sum);										//Add offer (owner) constraint to the solver.
 				sum.clear();												//Clear the linear expression in order to be used for the next offer.
 			}
 		} catch (IloException e)
@@ -100,7 +100,7 @@ public class metHeuMPConstrained extends metHeuMP
 				{
 					sum.addTerm(1, data.requests.get(i).feasible_matches.get(j).x);		
 				}
-				solver.addLe(1, sum);										//Add request (rider) constraint to the solver.
+				solver.addGe(1, sum);										//Add request (rider) constraint to the solver.
 				sum.clear();												//Clear the linear expression in order to be used for the next request.
 			}
 		} catch (IloException e)
