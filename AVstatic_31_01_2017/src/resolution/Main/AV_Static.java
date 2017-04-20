@@ -35,6 +35,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+
+import javax.swing.plaf.metal.MetalRadioButtonUI;
+
 public class AV_Static 
 {
 	public static IloCplex solver;
@@ -58,9 +61,11 @@ public class AV_Static
 		//File f = new File("C:/Users/abood.mourad/workspace/AVStatic_31_01_2017/Solutions/Match_Gen_Algo_V1/Result_BI_" + version + ".txt");
 		PrintStream printStream = new PrintStream(f);
 		//Build data instances based on original files, save generated instances into new files.
-		Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
+		//Build_Instances("BerlinCenter");										//Build different instances for BerlinCenter.
 		//Build_Instances("BerlinTiergarten");											//Build different instances for BerlinTiergarten.
 		//Build_Instances("Birmingham");											//Build different instances for Birmingham.
+		//Build_NewYork_MPs(); 													//Build MPs for New York.
+		Build_NewYork_Trips(); 													//Build trips (offers/requests) for New York.
 		//Read one data instance from file and store it in a Data_Instance object.
 		Data_Instance instance = Read_Instance("BerlinCenter", version);				//Read a Data_Instance object from a file.
 		//Data_Instance instance = Read_Instance("BerlinTiergarten", version);					//Read a Data_Instance object from a file.
@@ -296,6 +301,449 @@ public class AV_Static
 			}
 		}
 		System.out.print("DONE GENERATING INSTANCES");
+	}
+	
+	//A method for generating MPs out of "New York" metro/bus stations (different files).
+	public static void Build_NewYork_MPs()
+	{
+		int mp_id = 1;
+		try 
+		{
+			FileWriter mp_writer = new FileWriter("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_MPs_0");
+			BufferedWriter mp_write = new BufferedWriter(mp_writer);
+			mp_write.write("ID \t\t X \t\t\t Y \t\t Service Time \t\t Original ID");
+			mp_write.newLine();
+			//Read the first file (metro stations).
+			FileReader metro_reader = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Metro.txt");
+			BufferedReader metro_read = new BufferedReader(metro_reader);
+			metro_read.readLine();
+			String line = null;
+			String previous = "";
+			while((line = metro_read.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				if(!parts[2].equals(previous))
+				{
+					double y = Double.parseDouble(parts[4].trim());
+					double x = Double.parseDouble(parts[5].trim());
+					mp_write.write(mp_id++ + "\t" + x + "\t" + y + "\t\t" + MP_service_time + "\t\t MET" + parts[0]);
+					mp_write.newLine();
+					previous = parts[2];
+				}
+			}
+			metro_read.close();
+			//Read the second file (bus stations - Bus Company).
+			FileReader cbus_reader = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Bus_Company.txt");
+			BufferedReader cbus_read = new BufferedReader(cbus_reader);
+			cbus_read.readLine();
+			line = null;
+			previous = "";
+			while((line = cbus_read.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				if(!parts[1].equals(previous))
+				{
+					double y = Double.parseDouble(parts[3].trim());
+					double x = Double.parseDouble(parts[4].trim());
+					mp_write.write(mp_id++ + "\t" + x + "\t" + y + "\t\t" + MP_service_time + "\t\t CBUS" + parts[0]);
+					mp_write.newLine();
+					previous = parts[1];
+				}
+			}
+			cbus_read.close();
+			//Read the third file (bus stations - Bronx).
+			FileReader bronx_reader = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Bus_Bronx.txt");
+			BufferedReader bronx_read = new BufferedReader(bronx_reader);
+			bronx_read.readLine();
+			line = null;
+			previous = "";
+			while((line = bronx_read.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				if(!parts[1].equals(previous))
+				{
+					double y = Double.parseDouble(parts[3].trim());
+					double x = Double.parseDouble(parts[4].trim());
+					mp_write.write(mp_id++ + "\t" + x + "\t" + y + "\t\t" + MP_service_time + "\t\t BRX" + parts[0]);
+					mp_write.newLine();
+					previous = parts[1];
+				}
+			}
+			bronx_read.close();
+			//Read the fourth file (bus stations - Brooklyn).
+			FileReader brooklyn_reader = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Bus_Brooklyn.txt");
+			BufferedReader brooklyn_read = new BufferedReader(brooklyn_reader);
+			brooklyn_read.readLine();
+			line = null;
+			previous = "";
+			while((line = brooklyn_read.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				if(!parts[1].equals(previous))
+				{
+					double y = Double.parseDouble(parts[3].trim());
+					double x = Double.parseDouble(parts[4].trim());
+					mp_write.write(mp_id++ + "\t" + x + "\t" + y + "\t\t" + MP_service_time + "\t\t BRK" + parts[0]);
+					mp_write.newLine();
+					previous = parts[1];
+				}
+			}
+			brooklyn_read.close();
+			//Read the fifth file (bus stations - Manhattan).
+			FileReader man_reader = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Bus_Manhattan.txt");
+			BufferedReader man_read = new BufferedReader(man_reader);
+			man_read.readLine();
+			line = null;
+			previous = "";
+			while((line = man_read.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				if(!parts[1].equals(previous))
+				{
+					double y = Double.parseDouble(parts[3].trim());
+					double x = Double.parseDouble(parts[4].trim());
+					mp_write.write(mp_id++ + "\t" + x + "\t" + y + "\t\t" + MP_service_time + "\t\t MAN" + parts[0]);
+					mp_write.newLine();
+					previous = parts[1];
+				}
+			}
+			man_read.close();
+			//Read the sixth file (bus stations - Queens).
+			FileReader queens_reader = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Bus_Queens.txt");
+			BufferedReader queens_read = new BufferedReader(queens_reader);
+			queens_read.readLine();
+			line = null;
+			previous = "";
+			while((line = queens_read.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				if(!parts[1].equals(previous))
+				{
+					double y = Double.parseDouble(parts[3].trim());
+					double x = Double.parseDouble(parts[4].trim());
+					mp_write.write(mp_id++ + "\t" + x + "\t" + y + "\t\t" + MP_service_time + "\t\t QUN" + parts[0]);
+					mp_write.newLine();
+					previous = parts[1];
+				}
+			}
+			queens_read.close();
+			//Read the seventh file (bus stations - Staten Island).
+			FileReader staten_reader = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Bus_Staten.txt");
+			BufferedReader staten_read = new BufferedReader(staten_reader);
+			staten_read.readLine();
+			line = null;
+			previous = "";
+			while((line = staten_read.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				if(!parts[1].equals(previous))
+				{
+					double y = Double.parseDouble(parts[3].trim());
+					double x = Double.parseDouble(parts[4].trim());
+					mp_write.write(mp_id++ + "\t" + x + "\t" + y + "\t\t" + MP_service_time + "\t\t STN" + parts[0]);
+					mp_write.newLine();
+					previous = parts[1];
+				}
+			}
+			staten_read.close();
+			//Done writing MPs, close the writing stream.
+			mp_write.close();
+		} catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//A method for generating trips (offers and requests) for New York city based on the taxi cabs files.
+	public static void Build_NewYork_Trips()
+	{
+		//Create 4 ArrayLists to classify trips in different shifts (one list for every shift).
+		ArrayList<String> night_trips = new ArrayList<String>();
+		ArrayList<String> morning_trips = new ArrayList<String>();
+		ArrayList<String> day_trips = new ArrayList<String>();
+		ArrayList<String> evening_trips = new ArrayList<>();
+		//Read trips from csv file.
+		try {
+			FileReader fr = new FileReader("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/Green19-01-2016.txt");
+			BufferedReader br = new BufferedReader(fr);
+			String line = null;
+			while((line = br.readLine()) != null)
+			{
+				String[] parts = line.split(",");
+				String[] ddate = parts[1].split("\\s+");
+				String[] dtime = ddate[1].split(":");
+				double dhour = Double.parseDouble(dtime[0].trim());
+				if((dhour >= 23) || (dhour < 5))								//Night shift.
+				{
+					night_trips.add(line);
+				}
+				else if((dhour >= 5) && (dhour < 10))							//Morning shift.
+				{
+					morning_trips.add(line);
+				}
+				else if((dhour >= 10) && (dhour < 16))							//Day shift.
+				{
+					day_trips.add(line);
+				}
+				else															//Evening shift.
+				{
+					evening_trips.add(line);
+				}
+			}
+			//Open file streams to write the offers/requests to be generated.
+			FileWriter OFwr = new FileWriter("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Offers_0");
+			FileWriter REwr = new FileWriter("C:/Users/abood.mourad/workspace/AVstatic_31_01_2017/Data_Instances/NYC_Requests_0");
+			BufferedWriter OFbr = new BufferedWriter(OFwr);
+			BufferedWriter REbr = new BufferedWriter(REwr);
+			OFbr.write("ID \t\t Origin_X \t\t\t Origin_Y \t\t Destination_X \t\t Destination_Y \t\t E_time \t\t\t L_time \t\t\t Max_Duration \t\t\t Seats");
+			OFbr.newLine();
+			REbr.write("ID \t\t Origin_X \t\t\t Origin_Y \t\t Destination_X \t\t Destination_Y \t\t E_time \t\t\t L_time \t\t\t Max_Walk");
+			REbr.newLine();
+			int offer_counter = 1;
+			int request_counter = 1;
+			double participation_rate = 0.5;
+			//Generate offers and requests for the night shift (20% offers + 80% requests).
+			int num_offers = (night_trips.size()*20)/100;						//Calculate the number of offers to be generated.
+			int num_requests = night_trips.size() - num_offers;					//Calculate the number of requests to be generated.
+			//Generate offers.
+			String offer_line = null;
+			for(int i = 0 ; i < num_offers*participation_rate && 2*i < night_trips.size() ; i++)
+			{
+				offer_line = night_trips.get(2*i);
+				metHeuOffer offer = new metHeuOffer();
+				offer.id = offer_counter++;
+				String parts[] = offer_line.split(",");
+				offer.origin.x = Double.parseDouble(parts[5]);
+				offer.origin.y = Double.parseDouble(parts[6]);
+				offer.destination.x = Double.parseDouble(parts[7]);
+				offer.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				offer.e_time = depart_time - 0.25;								//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				offer.l_time = arrival_time + 0.25;								//Add 15 mins flexibility.
+				offer.max_duration = (arrival_time - depart_time) + max_duration;	//Add 20 extra mins to the actual trip duration.
+				offer.num_seats = num_seats;
+				//Write the generated offer to the file.
+				OFbr.write(offer.id + "\t" + offer.origin.x + "\t" + offer.origin.y + "\t" + offer.destination.x + "\t" + offer.destination.y + "\t" + offer.e_time + "\t" + offer.l_time + "\t" + offer.max_duration + "\t" + offer.num_seats);
+				OFbr.newLine();
+			}
+			//Generate requests.
+			String request_line = null;
+			for(int j = 0 ; j < num_requests*participation_rate && (2*j) + 1 < night_trips.size() ; j++)
+			{
+				request_line = night_trips.get((2*j)+1);
+				metHeuRequest request = new metHeuRequest();
+				request.id = request_counter++;
+				String parts[] = request_line.split(",");
+				request.origin.x = Double.parseDouble(parts[5]);
+				request.origin.y = Double.parseDouble(parts[6]);
+				request.destination.x = Double.parseDouble(parts[7]);
+				request.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				request.e_time = depart_time - 0.25;								//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				request.l_time = arrival_time + 0.25;								//Add 15 mins flexibility.
+				request.max_walk = max_walk;
+				REbr.write(request.id + "\t" + request.origin.x + "\t" + request.origin.y + "\t" + request.destination.x + "\t" + request.destination.y + "\t" + request.e_time + "\t" + request.l_time + "\t" + request.max_walk);
+				REbr.newLine();
+			}
+			//Generate offers and requests for the morning shift (50% offers + 50% requests).
+			num_offers = (morning_trips.size()*50)/100;								//Calculate the number of offers to be generated.
+			num_requests = morning_trips.size() - num_offers;						//Calculate the number of requests to be generated.
+			int num_round = (num_offers*25)/100;									//Calculate the number of round trips to be generated.
+			int generated_round = 0;												//Number of round trips actually generated.
+			Random random = new Random();
+			//Generate offers.
+			offer_line = null;
+			for(int i = 0 ; i < num_offers*participation_rate && 2*i < morning_trips.size() ; i++)
+			{
+				offer_line = morning_trips.get(2*i);
+				metHeuOffer offer = new metHeuOffer();
+				offer.id = offer_counter++;
+				String parts[] = offer_line.split(",");
+				offer.origin.x = Double.parseDouble(parts[5]);
+				offer.origin.y = Double.parseDouble(parts[6]);
+				offer.destination.x = Double.parseDouble(parts[7]);
+				offer.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				offer.e_time = depart_time - 0.25;									//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				offer.l_time = arrival_time + 0.25;									//Add 15 mins flexibility.
+				offer.max_duration = (arrival_time - depart_time) + max_duration;	//Add 20 extra mins to the actual trip duration.
+				offer.num_seats = num_seats;
+				//Write the generated offer to the file.
+				OFbr.write(offer.id + "\t" + offer.origin.x + "\t" + offer.origin.y + "\t" + offer.destination.x + "\t" + offer.destination.y + "\t" + offer.e_time + "\t" + offer.l_time + "\t" + offer.max_duration + "\t" + offer.num_seats);
+				OFbr.newLine();
+				//Generate round trips.
+				if((generated_round <= num_round) && (random.nextBoolean()))
+				{
+					metHeuOffer round = new metHeuOffer();
+					round.id = offer_counter++;
+					round.origin.x = offer.destination.x;
+					round.origin.y = offer.destination.y;
+					round.destination.x = offer.destination.x;
+					round.destination.y = offer.destination.y;
+					round.e_time = offer.l_time + 0.25;
+					round.l_time = 16 - 0.25;
+					round.max_duration = round.l_time - round.e_time;
+					round.num_seats = num_seats + 1;
+					//Write the generated offer to the file.
+					OFbr.write(round.id + "\t" + round.origin.x + "\t" + round.origin.y + "\t" + round.destination.x + "\t" + round.destination.y + "\t" + round.e_time + "\t" + round.l_time + "\t" + round.max_duration + "\t" + round.num_seats);
+					OFbr.newLine();
+				}
+			}
+			//Generate requests.
+			request_line = null;
+			for(int j = 0 ; j < num_requests*participation_rate && (2*j) + 1 < morning_trips.size() ; j++)
+			{
+				request_line = morning_trips.get((2*j)+1);
+				metHeuRequest request = new metHeuRequest();
+				request.id = request_counter++;
+				String parts[] = request_line.split(",");
+				request.origin.x = Double.parseDouble(parts[5]);
+				request.origin.y = Double.parseDouble(parts[6]);
+				request.destination.x = Double.parseDouble(parts[7]);
+				request.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				request.e_time = depart_time - 0.25;								//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				request.l_time = arrival_time + 0.25;								//Add 15 mins flexibility.
+				request.max_walk = max_walk;
+				REbr.write(request.id + "\t" + request.origin.x + "\t" + request.origin.y + "\t" + request.destination.x + "\t" + request.destination.y + "\t" + request.e_time + "\t" + request.l_time + "\t" + request.max_walk);
+				REbr.newLine();
+			}
+			//Generate offers and requests for the day shift (20% offers + 80% requests).
+			num_offers = (day_trips.size()*20)/100;									//Calculate the number of offers to be generated.
+			num_requests = day_trips.size() - num_offers;
+			//Generate offers.
+			offer_line = null;
+			for(int i = 0 ; i < num_offers*participation_rate && 2*i < day_trips.size() ; i++)
+			{
+				offer_line = day_trips.get(2*i);
+				metHeuOffer offer = new metHeuOffer();
+				offer.id = offer_counter++;
+				String parts[] = offer_line.split(",");
+				offer.origin.x = Double.parseDouble(parts[5]);
+				offer.origin.y = Double.parseDouble(parts[6]);
+				offer.destination.x = Double.parseDouble(parts[7]);
+				offer.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				offer.e_time = depart_time - 0.25;									//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				offer.l_time = arrival_time + 0.25;									//Add 15 mins flexibility.
+				offer.max_duration = (arrival_time - depart_time) + max_duration;	//Add 20 extra mins to the actual trip duration.
+				offer.num_seats = num_seats;
+				//Write the generated offer to the file.
+				OFbr.write(offer.id + "\t" + offer.origin.x + "\t" + offer.origin.y + "\t" + offer.destination.x + "\t" + offer.destination.y + "\t" + offer.e_time + "\t" + offer.l_time + "\t" + offer.max_duration + "\t" + offer.num_seats);
+				OFbr.newLine();
+			}
+			//Generate requests.
+			request_line = null;
+			for(int j = 0 ; j < num_requests*participation_rate && (2*j) + 1 < day_trips.size() ; j++)
+			{
+				request_line = day_trips.get((2*j)+1);
+				metHeuRequest request = new metHeuRequest();
+				request.id = request_counter++;
+				String parts[] = request_line.split(",");
+				request.origin.x = Double.parseDouble(parts[5]);
+				request.origin.y = Double.parseDouble(parts[6]);
+				request.destination.x = Double.parseDouble(parts[7]);
+				request.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				request.e_time = depart_time - 0.25;								//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				request.l_time = arrival_time + 0.25;								//Add 15 mins flexibility.
+				request.max_walk = max_walk;
+				REbr.write(request.id + "\t" + request.origin.x + "\t" + request.origin.y + "\t" + request.destination.x + "\t" + request.destination.y + "\t" + request.e_time + "\t" + request.l_time + "\t" + request.max_walk);
+				REbr.newLine();
+			}
+			//Generate offers and requests for the evening shift (50% offers + 50% requests).
+			num_offers = (evening_trips.size()*50)/100;								//Calculate the number of offers to be generated.
+			num_requests = evening_trips.size() - num_offers;						//Calculate the number of requests to be generated.
+			//Generate offers.
+			offer_line = null;
+			for(int i = 0 ; i < num_offers*participation_rate && 2*i < evening_trips.size() ; i++)
+			{
+				offer_line = evening_trips.get(2*i);
+				metHeuOffer offer = new metHeuOffer();
+				offer.id = offer_counter++;
+				String parts[] = offer_line.split(",");
+				offer.origin.x = Double.parseDouble(parts[5]);
+				offer.origin.y = Double.parseDouble(parts[6]);
+				offer.destination.x = Double.parseDouble(parts[7]);
+				offer.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				offer.e_time = depart_time - 0.25;									//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				offer.l_time = arrival_time + 0.25;									//Add 15 mins flexibility.
+				offer.max_duration = (arrival_time - depart_time) + max_duration;	//Add 20 extra mins to the actual trip duration.
+				offer.num_seats = num_seats;
+				//Write the generated offer to the file.
+				OFbr.write(offer.id + "\t" + offer.origin.x + "\t" + offer.origin.y + "\t" + offer.destination.x + "\t" + offer.destination.y + "\t" + offer.e_time + "\t" + offer.l_time + "\t" + offer.max_duration + "\t" + offer.num_seats);
+				OFbr.newLine();
+			}
+			//Generate requests.
+			request_line = null;
+			for(int j = 0 ; j < num_requests*participation_rate && (2*j) + 1 < evening_trips.size() ; j++)
+			{
+				request_line = evening_trips.get((2*j)+1);
+				metHeuRequest request = new metHeuRequest();
+				request.id = request_counter++;
+				String parts[] = request_line.split(",");
+				request.origin.x = Double.parseDouble(parts[5]);
+				request.origin.y = Double.parseDouble(parts[6]);
+				request.destination.x = Double.parseDouble(parts[7]);
+				request.destination.y = Double.parseDouble(parts[8]);
+				String[] ddate1 = parts[1].split("\\s+");
+				String[] dtime1 = ddate1[1].split(":");
+				double depart_time = Double.parseDouble(dtime1[0].trim()) + ((Double.parseDouble(dtime1[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime1[2].trim())*100)/60)/10000;
+				request.e_time = depart_time - 0.25;								//Subtract 15 mins flexibility.
+				String[] ddate2 = parts[2].split("\\s+");
+				String[] dtime2 = ddate2[1].split(":");
+				double arrival_time = Double.parseDouble(dtime2[0].trim()) + ((Double.parseDouble(dtime2[1].trim())*100)/60)/100 + ((Double.parseDouble(dtime2[2].trim())*100)/60)/10000;
+				request.l_time = arrival_time + 0.25;								//Add 15 mins flexibility.
+				request.max_walk = max_walk;
+				REbr.write(request.id + "\t" + request.origin.x + "\t" + request.origin.y + "\t" + request.destination.x + "\t" + request.destination.y + "\t" + request.e_time + "\t" + request.l_time + "\t" + request.max_walk);
+				REbr.newLine();
+			}
+			//Close the writing streams.
+			OFbr.close();
+			REbr.close();
+		} catch (IOException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 	
 	//A method for reading one Data instance from a file to a Data instance object.
