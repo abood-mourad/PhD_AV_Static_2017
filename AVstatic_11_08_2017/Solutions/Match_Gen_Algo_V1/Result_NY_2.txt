@@ -1,0 +1,161 @@
+
+Offer: 3 , Requests: 33( 0 -> 0 ) ; 
+Offer: 5 , Requests: 74( 0 -> 9569 ) ; 
+Offer: 6 , Requests: 35( 11118 -> 0 ) ; 
+Offer: 7 , Requests: 10( 0 -> 11410 ) ; 
+Offer: 8 , Requests: 12( 11111 -> 0 ) ; 
+Offer: 9 , Requests: 49( 11098 -> 379 ) ; 
+Offer: 11 , Requests: 59( 10471 -> 11613 ) ; 
+Offer: 12 , Requests: 15( 261 -> 0 ) ; 
+Offer: 17 , Requests: 2( 0 -> 0 ) ; 
+Offer: 18 , Requests: 6( 0 -> 9571 ) ; 
+Offer: 19 , Requests: 43( 0 -> 0 ) ; 
+Offer: 21 , Requests: 7( 0 -> 0 ) ; 
+Offer: 23 , Requests: 55( 0 -> 409 ) ; 
+Offer: 24 , Requests: 11( 0 -> 0 ) ; 
+Offer: 25 , Requests: 70( 0 -> 0 ) ; 
+Offer: 26 , Requests: 3( 0 -> 0 ) ; 
+Offer: 27 , Requests: 47( 432 -> 0 ) ; 
+Offer: 29 , Requests: 54( 0 -> 0 ) ; 
+Offer: 30 , Requests: 60( 261 -> 1058 ) ; 
+Offer: 31 , Requests: 67( 0 -> 10954 ) ; 
+Offer: 32 , Requests: 65( 296 -> 10669 ) ; 
+Offer: 33 , Requests: 40( 0 -> 0 ) ; 
+Offer: 39 , Requests: 64( 0 -> 1179 ) ; 
+Offer: 40 , Requests: 37( 10974 -> 0 ) ; 
+Offer: 41 , Requests: 14( 0 -> 0 ) ; 
+Offer: 42 , Requests: 45( 0 -> 10974 ) ; 
+Offer: 43 , Requests: 23( 0 -> 0 ) ; 
+Offer: 45 , Requests: 5( 0 -> 11012 ) ; 
+Offer: 46 , Requests: 4( 22 -> 0 ) ; 
+Offer: 48 , Requests: 17( 379 -> 11410 ) ; 
+Offer: 49 , Requests: 8( 10974 -> 10669 ) ; 
+Offer: 50 , Requests: 68( 0 -> 11456 ) ; 
+Offer: 51 , Requests: 52( 0 -> 0 ) ; 
+Offer: 52 , Requests: 22( 416 -> 1047 ) ; 
+Offer: 53 , Requests: 19( 11670 -> 432 ) ; 
+Offer: 55 , Requests: 18( 0 -> 0 ) ; 
+Offer: 56 , Requests: 25( 0 -> 0 ) ; 
+Offer: 58 , Requests: 29( 379 -> 1179 ) ; 
+Offer: 59 , Requests: 39( 0 -> 148 ) ; 
+Offer: 60 , Requests: 27( 0 -> 10832 ) ; 
+Offer: 62 , Requests: 28( 11694 -> 0 ) ; 
+Offer: 64 , Requests: 51( 0 -> 0 ) ; 
+Offer: 66 , Requests: 71( 0 -> 0 ) ; 
+Offer: 68 , Requests: 16( 0 -> 0 ) ; 
+Offer: 70 , Requests: 13( 0 -> 7036 ) ; 
+Offer: 71 , Requests: 44( 0 -> 0 ) ; 
+Offer: 72 , Requests: 58( 0 -> 11456 ) ; 
+Offer: 74 , Requests: 1( 10540 -> 0 ) ; 
+Offer: 75 , Requests: 75( 0 -> 0 ) ; 
+Offer: 76 , Requests: 1190( 0 -> 0 ) ; 1194( 0 -> 0 ) ; 1191( 0 -> 0 ) ; 1196( 0 -> 0 ) ; 1200( 0 -> 0 ) ; 1199( 0 -> 0 ) ; 1193( 0 -> 0 ) ; 1197( 0 -> 0 ) ; 1195( 0 -> 0 ) ; 1192( 0 -> 0 ) ; 1198( 0 -> 0 ) ; 1102( 0 -> 0 ) ; 1173( 0 -> 0 ) ; 1138( 0 -> 0 ) ; 1157( 0 -> 0 ) ; 1153( 0 -> 0 ) ; 1184( 0 -> 0 ) ; 1109( 0 -> 0 ) ; 1143( 0 -> 0 ) ; 1125( 0 -> 0 ) ; 1174( 0 -> 0 ) ; 1131( 0 -> 0 ) ; 1165( 0 -> 0 ) ; 1155( 0 -> 0 ) ; 1164( 0 -> 0 ) ; 1128( 0 -> 0 ) ; 1162( 0 -> 0 ) ; 1142( 0 -> 0 ) ; 1166( 0 -> 0 ) ; 1121( 0 -> 0 ) ; 1183( 0 -> 0 ) ; 1188( 0 -> 0 ) ; 1115( 0 -> 0 ) ; 1118( 0 -> 0 ) ; 1145( 0 -> 0 ) ; 1156( 0 -> 0 ) ; 1129( 0 -> 0 ) ; 1152( 0 -> 0 ) ; 1139( 0 -> 0 ) ; 1120( 0 -> 0 ) ; 1107( 0 -> 0 ) ; 
+Offer: 81 , Requests: 93( 0 -> 0 ) ; 
+Offer: 82 , Requests: 86( 1056 -> 0 ) ; 
+Offer: 83 , Requests: 76( 0 -> 0 ) ; 
+Offer: 84 , Requests: 79( 261 -> 0 ) ; 
+Offer: 85 , Requests: 89( 27 -> 0 ) ; 
+Offer: 86 , Requests: 101( 0 -> 0 ) ; 
+Offer: 90 , Requests: 100( 11410 -> 0 ) ; 
+Offer: 91 , Requests: 1103( 0 -> 0 ) ; 1117( 0 -> 0 ) ; 1177( 0 -> 0 ) ; 1106( 0 -> 0 ) ; 1108( 0 -> 0 ) ; 1110( 0 -> 0 ) ; 1169( 0 -> 0 ) ; 1119( 0 -> 0 ) ; 1187( 0 -> 0 ) ; 1171( 0 -> 0 ) ; 1126( 0 -> 0 ) ; 1179( 0 -> 0 ) ; 1124( 0 -> 0 ) ; 1175( 0 -> 0 ) ; 1147( 0 -> 0 ) ; 1148( 0 -> 0 ) ; 1163( 0 -> 0 ) ; 1116( 0 -> 0 ) ; 1134( 0 -> 0 ) ; 1167( 0 -> 0 ) ; 1172( 0 -> 0 ) ; 1122( 0 -> 0 ) ; 1161( 0 -> 0 ) ; 1170( 0 -> 0 ) ; 1178( 0 -> 0 ) ; 1160( 0 -> 0 ) ; 1150( 0 -> 0 ) ; 1182( 0 -> 0 ) ; 1132( 0 -> 0 ) ; 1137( 0 -> 0 ) ; 1158( 0 -> 0 ) ; 1130( 0 -> 0 ) ; 1135( 0 -> 0 ) ; 1168( 0 -> 0 ) ; 1185( 0 -> 0 ) ; 1123( 0 -> 0 ) ; 1105( 0 -> 0 ) ; 
+Offer: 93 , Requests: 1104( 0 -> 0 ) ; 1159( 0 -> 0 ) ; 1133( 0 -> 0 ) ; 1146( 0 -> 0 ) ; 1140( 0 -> 0 ) ; 1114( 0 -> 0 ) ; 1151( 0 -> 0 ) ; 1144( 0 -> 0 ) ; 1181( 0 -> 0 ) ; 1111( 0 -> 0 ) ; 1180( 0 -> 0 ) ; 1113( 0 -> 0 ) ; 1127( 0 -> 0 ) ; 1154( 0 -> 0 ) ; 1136( 0 -> 0 ) ; 1186( 0 -> 0 ) ; 1189( 0 -> 0 ) ; 1149( 0 -> 0 ) ; 1176( 0 -> 0 ) ; 
+Offer: 96 , Requests: 96( 0 -> 0 ) ; 
+Offer: 101 , Requests: 80( 0 -> 2006 ) ; 
+Offer: 103 , Requests: 87( 0 -> 0 ) ; 
+Offer: 107 , Requests: 84( 11236 -> 0 ) ; 
+Offer: 114 , Requests: 78( 0 -> 0 ) ; 
+Offer: 214 , Requests: 234( 0 -> 0 ) ; 
+Offer: 215 , Requests: 305( 0 -> 0 ) ; 
+Offer: 217 , Requests: 224( 1070 -> 0 ) ; 
+Offer: 219 , Requests: 300( 0 -> 11154 ) ; 
+Offer: 222 , Requests: 283( 0 -> 0 ) ; 
+Offer: 223 , Requests: 225( 11329 -> 0 ) ; 
+Offer: 224 , Requests: 223( 0 -> 0 ) ; 
+Offer: 225 , Requests: 290( 0 -> 0 ) ; 
+Offer: 226 , Requests: 278( 0 -> 0 ) ; 
+Offer: 227 , Requests: 259( 1087 -> 9560 ) ; 
+Offer: 228 , Requests: 242( 0 -> 10540 ) ; 
+Offer: 229 , Requests: 246( 11410 -> 0 ) ; 
+Offer: 230 , Requests: 213( 12067 -> 0 ) ; 
+Offer: 231 , Requests: 291( 10974 -> 0 ) ; 
+Offer: 232 , Requests: 258( 0 -> 1179 ) ; 
+Offer: 234 , Requests: 226( 0 -> 1056 ) ; 
+Offer: 235 , Requests: 304( 0 -> 0 ) ; 
+Offer: 237 , Requests: 205( 0 -> 0 ) ; 
+Offer: 238 , Requests: 220( 0 -> 9569 ) ; 
+Offer: 239 , Requests: 249( 0 -> 1070 ) ; 
+Offer: 240 , Requests: 277( 10832 -> 0 ) ; 
+Offer: 241 , Requests: 260( 11034 -> 10471 ) ; 
+Offer: 242 , Requests: 257( 0 -> 1102 ) ; 
+Offer: 246 , Requests: 231( 0 -> 1087 ) ; 
+Offer: 247 , Requests: 292( 0 -> 379 ) ; 
+Offer: 248 , Requests: 236( 0 -> 0 ) ; 
+Offer: 249 , Requests: 270( 0 -> 10954 ) ; 
+Offer: 250 , Requests: 306( 296 -> 0 ) ; 
+Offer: 252 , Requests: 293( 12274 -> 10758 ) ; 
+Offer: 253 , Requests: 265( 0 -> 0 ) ; 
+Offer: 255 , Requests: 269( 1076 -> 0 ) ; 
+Offer: 256 , Requests: 297( 12142 -> 11043 ) ; 
+Offer: 257 , Requests: 202( 0 -> 0 ) ; 
+Offer: 258 , Requests: 268( 12274 -> 10537 ) ; 
+Offer: 259 , Requests: 262( 0 -> 0 ) ; 
+Offer: 260 , Requests: 232( 0 -> 0 ) ; 
+Offer: 261 , Requests: 203( 11413 -> 1076 ) ; 
+Offer: 262 , Requests: 235( 0 -> 0 ) ; 
+Offer: 263 , Requests: 303( 0 -> 0 ) ; 
+Offer: 264 , Requests: 228( 10402 -> 0 ) ; 
+Offer: 267 , Requests: 286( 0 -> 1071 ) ; 
+Offer: 268 , Requests: 250( 0 -> 1179 ) ; 
+Offer: 269 , Requests: 266( 0 -> 60 ) ; 
+Offer: 270 , Requests: 216( 0 -> 1179 ) ; 
+Offer: 271 , Requests: 280( 1030 -> 11154 ) ; 
+Offer: 272 , Requests: 255( 0 -> 0 ) ; 
+Offer: 273 , Requests: 233( 148 -> 0 ) ; 
+Offer: 274 , Requests: 298( 11236 -> 10537 ) ; 
+Offer: 275 , Requests: 261( 0 -> 0 ) ; 
+Offer: 277 , Requests: 279( 0 -> 416 ) ; 
+Offer: 278 , Requests: 299( 0 -> 0 ) ; 
+Offer: 282 , Requests: 296( 0 -> 0 ) ; 
+Offer: 284 , Requests: 247( 0 -> 0 ) ; 
+Offer: 285 , Requests: 241( 0 -> 0 ) ; 
+Offer: 286 , Requests: 211( 0 -> 0 ) ; 
+Offer: 288 , Requests: 282( 0 -> 0 ) ; 
+Offer: 289 , Requests: 204( 416 -> 0 ) ; 
+Offer: 291 , Requests: 219( 0 -> 0 ) ; 
+Offer: 292 , Requests: 273( 0 -> 1071 ) ; 
+Offer: 293 , Requests: 238( 0 -> 0 ) ; 
+Offer: 295 , Requests: 214( 22 -> 0 ) ; 
+Offer: 296 , Requests: 221( 10537 -> 0 ) ; 
+Offer: 297 , Requests: 230( 0 -> 0 ) ; 
+Offer: 299 , Requests: 272( 0 -> 0 ) ; 
+Offer: 300 , Requests: 244( 0 -> 0 ) ; 
+Offer: 303 , Requests: 281( 0 -> 0 ) ; 
+Offer: 306 , Requests: 284( 11048 -> 10454 ) ; 
+Offer: 308 , Requests: 252( 0 -> 0 ) ; 
+Offer: 309 , Requests: 274( 199 -> 0 ) ; 
+Offer: 310 , Requests: 287( 0 -> 0 ) ; 
+Offer: 311 , Requests: 212( 0 -> 0 ) ; 
+Offer: 312 , Requests: 229( 0 -> 0 ) ; 
+Offer: 313 , Requests: 251( 0 -> 0 ) ; 
+Offer: 314 , Requests: 207( 0 -> 0 ) ; 
+Offer: 315 , Requests: 243( 10400 -> 1043 ) ; 
+Offer: 316 , Requests: 239( 0 -> 0 ) ; 
+Offer: 317 , Requests: 227( 0 -> 0 ) ; 
+==============================================================================================================
+
+==============================================================================================================
+Intsance ID: 		 NYC_2
+Num of Zones: 		 6
+Num of Offers: 		 319.0
+Num of round_trip offers: 		19.0
+Num of Requests: 		 306.0
+Num of day-shift requests: 		0.0
+CPU Time (s): 		 8,471
+Num of Participants: 		 376.0
+Participation Rate(%): 		60,16%
+Matched Offers (%): 		141.0	(44,201%)
+Matched round trip offers (%): 		3.0	(15,789%)
+Matched Requests (%): 		235.0	(76,797%)
+Num of matched day-shift requests: 		97.0	(?%)
+Distance Savings (km): 		15,64
+==============================================================================================================
+Intermediate CPU time (s): 7,16
